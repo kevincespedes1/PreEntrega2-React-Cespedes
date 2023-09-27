@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const ItemCount = ({ product, initial, onAdd }) => {
     const [count, setCount] = useState(initial);
     const { stock } = product
+
     function onAdd() {
         if (count < stock) {
             setCount(count + 1)
@@ -14,6 +17,13 @@ const ItemCount = ({ product, initial, onAdd }) => {
             setCount(count - 1)
         }
     }
+    // const agregar = ()=>{
+    //     useEffect(()=>{
+    //         window.addEventListener('click', ()=>{
+    //             console.log("hola")
+    //             });
+    //     })
+    // }
 
     return (
         <div className='flexx'>
@@ -22,7 +32,9 @@ const ItemCount = ({ product, initial, onAdd }) => {
                 <span>{count}</span>
                 <button className='button' onClick={onAdd}>+</button>
             </div>
-            <button className='agregar'>Agregar al Carrito</button>
+            <NavLink to={`/cart`}>
+                <button className='agregar'>Agregar al Carrito</button>
+            </NavLink>
         </div>
     )
 }

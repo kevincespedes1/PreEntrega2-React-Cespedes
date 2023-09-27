@@ -283,6 +283,7 @@ h3 {
     border-color: black;
     padding-left: 5px;
     padding-right: 5px;
+    cursor: pointer;
 }
 
 .atras {
