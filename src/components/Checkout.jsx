@@ -42,9 +42,11 @@ export default function Checkout() {
             </form>
             {
                 orderId&&(
-                    <div style={{display:'flex'}}>
+                    <div>
                         <h2>Compra exitosa</h2>
+                        <br />
                         <h2>{`El código de compra es: ${orderId}`}</h2>
+                        <br />
                         <Link to="/"><button className='btn'>volver a comprar</button></Link>
                     </div>
                     )
