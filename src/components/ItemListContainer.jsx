@@ -1,37 +1,29 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
 import ItemList from './ItemList';
-import { getProducts, getProductsByCategory } from '../products'
 import { useParams } from 'react-router-dom'
-
-const ItemListContainer = ({ greeting }) => {
+import { collection, getDocs, query, where, getFirestore } from 'firebase/firestore'
+const ItemListContainer = () => {
     const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(true)
-
-    const { categoryId } = useParams()
-
+    const { categoryId } = useParams();
     useEffect(() => {
-        setLoading(true)
-
-        const asyncFunction = categoryId ? getProductsByCategory : getProducts
-
-        asyncFunction(categoryId).then(result => {
-            setProducts(result)
-        }).catch(error => {
-            console.log(error)
-        }).finally(() => {
-            setLoading(false)
+        const db = getFirestore();
+        const productsRef = collection(db, "products");
+        const qRef = categoryId ? query(productsRef,
+            where('category', '==', categoryId))
+            : productsRef
+        getDocs(qRef).then((snapshot) => {
+            const data = snapshot.docs.map((product) => {
+                return { id: product.id, ...product.data() }
+            })
+            setProducts(data);
         })
-    }, [categoryId])
-
-    if (loading) {
-        return <h1>Cargando Productos...</h1>
-    }
+            .catch((error) => { console.log(error) })
+    }, [categoryId]);
     return (
-
-        <div className="item-list-container"><ItemList products={products} /></div>
-
+        <div>
+            <ItemList products={products} />
+        </div>
     )
-
 }
 export default ItemListContainer

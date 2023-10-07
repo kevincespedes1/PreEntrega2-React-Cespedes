@@ -1,42 +1,33 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 
-const ItemCount = ({ product, initial, onAdd }) => {
+import { useState } from 'react'
+
+
+export default function ItemCount({product, initial, onAdd}) {
     const [count, setCount] = useState(initial);
-    const { stock } = product
-
-    function onAdd() {
+    const { stock} = product
+    
+    
+    
+    function onIncrement() {
         if (count < stock) {
             setCount(count + 1)
         }
     }
-
     function onDecrease() {
         if (count > 1) {
             setCount(count - 1)
         }
     }
-    // const agregar = ()=>{
-    //     useEffect(()=>{
-    //         window.addEventListener('click', ()=>{
-    //             console.log("hola")
-    //             });
-    //     })
-    // }
 
     return (
         <div className='flexx'>
             <div className='flex'>
                 <button className='button' onClick={onDecrease}>-</button>
                 <span>{count}</span>
-                <button className='button' onClick={onAdd}>+</button>
+                <button className='button' onClick={onIncrement}>+</button>
             </div>
-            <NavLink to={`/cart`}>
-                <button className='agregar'>Agregar al Carrito</button>
-            </NavLink>
+                <button className='agregar' onClick={()=> onAdd(count)} disabled={!stock}>Agregar al Carrito</button>
         </div>
     )
 }
 
-export default ItemCount

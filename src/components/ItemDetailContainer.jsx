@@ -1,30 +1,28 @@
-import { useState, useEffect } from 'react';
-import React from "react";
-import { getProduct } from "../products";
-import { useParams } from "react-router-dom";
-import ItemDetail from "./ItemDetail";
-
-
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import ItemDetail from './ItemDetail'
 const ItemDetailContainer = () => {
-    const [product, setItem] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [product, setproduct] = useState();
     const { id } = useParams();
-
+    const getProduct = () => {
+        const db = getFirestore();
+        const query = doc(db, 'products', id);
+        getDoc(query)
+            .then((snapshot) => {
+                setproduct({ id: snapshot.id, ...snapshot.data() })
+            })
+            .catch(error => console.log(error))
+    };
     useEffect(() => {
-        getProduct(id)
-            .then((response) => {
-                setItem(response);
-            })
-            .catch(() => {
-                setItem(null)
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    }, [id]);
-
-
-    return <ItemDetail product={product} isLoading={isLoading} />;
-};
-
-export default ItemDetailContainer;
+        getProduct();
+    }, [id])
+    return (
+        <div className='detailContainer'>
+            {product &&
+                <ItemDetail product={product}></ItemDetail>
+            }
+        </div>
+    )
+}
+export default ItemDetailContainer

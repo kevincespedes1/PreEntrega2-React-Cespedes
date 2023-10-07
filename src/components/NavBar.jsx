@@ -2,7 +2,6 @@ import '../App.jsx';
 import CartWidget from './CartWidget';
 import { NavLink } from 'react-router-dom';
 function Navbar() {
-
     return (
         <>
             <div className='logo'>
@@ -27,11 +26,11 @@ function Navbar() {
                         <NavLink to="/category/buso">Busos</NavLink>
                     </li>
                 </ul>
-
+                <NavLink to='/cart'>
                 <CartWidget />
+                </NavLink>
             </div>
         </>
     );
 }
-
 export default Navbar;
